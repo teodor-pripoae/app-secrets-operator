@@ -22,6 +22,14 @@ import (
 
 // AppSecretSpec defines the desired state of AppSecret
 type AppSecretSpec struct {
+	// Describe here environment variables.
+	// Some of them can be simple strings, some of them can be references to other secrets.
+	// Example:
+	// env:
+	//   DB_HOST: "localhost"
+	//   DB_PORT: "5432"
+	//   DB_USERNAME: "secret://my-secret/db-username"
+	//   DB_PASSWORD: "secret://my-secret/db-password"
 	Env map[string]string `json:"env,omitempty"`
 }
 
