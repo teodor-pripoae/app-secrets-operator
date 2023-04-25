@@ -1,17 +1,13 @@
 name: build and release
 
 on:
-  push:
-    branches:
-      - build
-  # release:
-  # types: [published]
+  release:
+    types: [published]
 
 env:
-  # TAG: "${{ github.ref_name }}"
-  TAG: "v0.1.0"
+  TAG: "${{ github.ref_name }}"
 jobs:
-  installing_linting_building:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
@@ -26,11 +22,20 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PAT }}
+      - name: Set version
+        run: |
+          echo "VERSION=${TAG//v/}" >>${GITHUB_ENV}
+      - name: Generate release yaml
+        run: make release
       - name: Build docker image
         run: |
           make docker-build
           make docker-push
-
-      # - name: Build manifests
-      #   run: |
-      #     make manifests
+      - name: Upload file to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.PAT }}
+          file: config/release/static.yaml
+          asset_name: release.yaml
+          tag: ${{ env.TAG }}
+          overwrite: true
