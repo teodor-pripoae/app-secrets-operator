@@ -22,11 +22,13 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PAT }}
+      - name: Install kustomize
+        uses: imranismail/setup-kustomize@v2
       - name: Set version
         run: |
           echo "VERSION=${TAG//v/}" >>${GITHUB_ENV}
       - name: Generate release yaml
-        run: make release
+        run: make static
       - name: Build docker image
         run: |
           make docker-build
