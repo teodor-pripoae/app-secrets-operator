@@ -1,11 +1,10 @@
 # These resources constitute the fully configured set of manifests
 # used to generate the 'manifests/' directory in a bundle.
 resources:
-- bases/app-secrets-operator.clusterserviceversion.yaml
-- ../default
-- ../samples
-- ../scorecard
-
+  - bases/app-secrets-operator.clusterserviceversion.yaml
+  - ../default
+  - ../samples
+  - ../scorecard
 # [WEBHOOK] To enable webhooks, uncomment all the sections with [WEBHOOK] prefix.
 # Do NOT uncomment sections with prefix [CERTMANAGER], as OLM does not support cert-manager.
 # These patches remove the unnecessary "cert" volume and its manager container volumeMount.
@@ -14,7 +13,7 @@ resources:
 #    group: apps
 #    version: v1
 #    kind: Deployment
-#    name: controller-manager
+#    name: controller
 #    namespace: system
 #  patch: |-
 #    # Remove the manager container's "cert" volumeMount, since OLM will create and mount a set of certs.
